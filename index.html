@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Napoleon: Eagle Warriors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="recursos-bar">
+        <div class="recurso">💰 <span id="oro">100</span></div>
+        <div class="recurso">🌾 <span id="comida">50</span></div>
+        <div class="recurso">🪵 <span id="madera">150</span></div>
+        <div class="recurso">🍂 <span id="tabaco">0</span></div>
+    </header>
+
+    <main class="contenedor">
+        <section class="section">
+            <div class="header-inline">
+                <h3>🏙️ Colonias</h3>
+                <button class="btn-classic" onclick="intentarConstruirCiudad()">Fundar (50💰 100🪵)</button>
+            </div>
+            <div id="lista-ciudades" class="carrusel"></div>
+        </section>
+
+        <section class="section">
+            <h3>⚔️ Campo de Marte</h3>
+            <div class="enemigos-disponibles">
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Infantería Pesada')">🛡️</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Caballería')">🏇</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Cañón')">💣</button>
+            </div>
+            <div class="combate-container">
+                <div id="slot-jugador" class="slot-combate">Tu Unidad</div>
+                <div class="vs">VS</div>
+                <div id="slot-enemigo" class="slot-combate">Enemigo</div>
+            </div>
+            <button id="btn-enfrentar" class="btn-atacar" onclick="iniciarCombate()" disabled>¡FUEGO!</button>
+        </section>
+
+        <section class="section">
+            <h3>🚩 Frente Enemigo (Objetivos)</h3>
+            <div id="frente-enemigo" class="carrusel-cartas"></div>
+        </section>
+
+        <section class="section">
+            <h3>💂 Mi Regimiento</h3>
+            <div id="cuadro-ejercito" class="carrusel-cartas"></div>
+        </section>
+
+        <section class="section">
+            <h3>⚓ Puerto de Envío</h3>
+            <div class="progress-container"><div id="progreso-metropolis" class="progress-bar">0%</div></div>
+            <div class="botones-grid">
+                <button class="btn-envio" onclick="enviarRecurso('oro')">Oro</button>
+                <button class="btn-envio" onclick="enviarRecurso('comida')">Comida</button>
+                <button class="btn-envio" onclick="enviarRecurso('madera')">Madera</button>
+                <button class="btn-envio" onclick="enviarRecurso('tabaco')">Tabaco</button>
+            </div>
+            <div id="recompensa-panel" class="recompensa-panel hidden">
+                <h4>¡Refuerzos Listos!</h4>
+                <div class="botones-grid">
+                    <button class="btn-classic" onclick="pedirRefuerzo('Infantería Pesada')">Inf.</button>
+                    <button class="btn-classic" onclick="pedirRefuerzo('Caballería')">Cab.</button>
+                    <button class="btn-classic" onclick="pedirRefuerzo('Cañón')">Cañón</button>
+                </div>
+            </div>
+        </section>
+
+        <button class="btn-turno-fijo" onclick="siguienteTurno()">FINALIZAR TURNO</button>
+    </main>
+
+    <div id="modal-resultado" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="res-titulo"></h2>
+            <img id="res-img" src="" alt="Resultado">
+            <p id="res-detalle"></p>
+            <button onclick="cerrarModal()" class="btn-classic-lg">Continuar</button>
+        </div>
+    </div>
+
+    <script src="javascript.js"></script>
+</body>
+</html>
