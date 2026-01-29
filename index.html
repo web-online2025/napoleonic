@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Napoleon: Eagle Warriors</title>
+    <title>Napoleon: War & Industry</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <header class="recursos-bar">
-        <div class="recurso">💰 <span id="oro">100</span></div>
-        <div class="recurso">🌾 <span id="comida">50</span></div>
-        <div class="recurso">🪵 <span id="madera">150</span></div>
-        <div class="recurso">🍂 <span id="tabaco">0</span></div>
+        <div class="recurso">Oro: <span id="oro">100</span></div>
+        <div class="recurso">Comida: <span id="comida">50</span></div>
+        <div class="recurso">Madera: <span id="madera">150</span></div>
+        <div class="recurso">Tabaco: <span id="tabaco">0</span></div>
+        <div class="recurso">Mosquetes: <span id="mosquetes">0</span></div>
     </header>
 
     <main class="contenedor">
         <section class="section">
             <div class="header-inline">
-                <h3>🏙️ Colonias</h3>
-                <button class="btn-classic" onclick="intentarConstruirCiudad()">Fundar (50💰 100🪵)</button>
+                <h3> Mis Colonias</h3>
+                <button class="btn-classic" onclick="intentarConstruirCiudad()">Fundar Ciudad (50 Oro, 100 Madera)</button>
             </div>
             <div id="lista-ciudades" class="carrusel"></div>
         </section>
@@ -27,20 +28,24 @@
         <section class="section">
             <h3>⚔️ Campo de Marte</h3>
             <div class="enemigos-disponibles">
-                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Infantería Pesada')">🛡️</button>
-                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Caballería')">🏇</button>
-                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Cañón')">💣</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Infantería Ligera')">I. Ligera</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Infantería Pesada')">I. Pesada</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Caballería')">Caballeria</button>
+                <button class="btn-target" onclick="seleccionarEnemigoNuevo('Cañón')">Cañones</button>
             </div>
             <div class="combate-container">
                 <div id="slot-jugador" class="slot-combate">Tu Unidad</div>
                 <div class="vs">VS</div>
                 <div id="slot-enemigo" class="slot-combate">Enemigo</div>
             </div>
-            <button id="btn-enfrentar" class="btn-atacar" onclick="iniciarCombate()" disabled>¡FUEGO!</button>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button id="btn-enfrentar" class="btn-atacar" onclick="iniciarCombate()" disabled>¡ORDEN DE FUEGO!</button>
+                <button id="btn-retirada" class="btn-classic" style="background: #555; display: none;" onclick="retirarse()">Retirada</button>
+            </div>
         </section>
 
         <section class="section">
-            <h3>🚩 Frente Enemigo (Objetivos)</h3>
+            <h3>🚩 Unidades en el Frente</h3>
             <div id="frente-enemigo" class="carrusel-cartas"></div>
         </section>
 
@@ -51,32 +56,50 @@
 
         <section class="section">
             <h3>⚓ Puerto de Envío</h3>
-            <div class="progress-container"><div id="progreso-metropolis" class="progress-bar">0%</div></div>
-            <div class="botones-grid">
-                <button class="btn-envio" onclick="enviarRecurso('oro')">Oro</button>
-                <button class="btn-envio" onclick="enviarRecurso('comida')">Comida</button>
-                <button class="btn-envio" onclick="enviarRecurso('madera')">Madera</button>
-                <button class="btn-envio" onclick="enviarRecurso('tabaco')">Tabaco</button>
+            <div class="progress-container" style="background:#ddd; height:20px; border-radius:10px; overflow:hidden;">
+                <div id="progreso-metropolis" class="progress-bar" style="background:var(--azul); height:100%; width:0%; transition:0.3s; color:white; font-size:12px; text-align:center;">0%</div>
             </div>
-            <div id="recompensa-panel" class="recompensa-panel hidden">
-                <h4>¡Refuerzos Listos!</h4>
-                <div class="botones-grid">
-                    <button class="btn-classic" onclick="pedirRefuerzo('Infantería Pesada')">Inf.</button>
-                    <button class="btn-classic" onclick="pedirRefuerzo('Caballería')">Cab.</button>
-                    <button class="btn-classic" onclick="pedirRefuerzo('Cañón')">Cañón</button>
+            <div class="grid-local" style="margin-top:10px; display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                <button class="btn-classic" onclick="enviarRecurso('oro')">Enviar Oro</button>
+                <button class="btn-classic" onclick="enviarRecurso('comida')">Enviar Comida</button>
+                <button class="btn-classic" onclick="enviarRecurso('madera')">Enviar Madera</button>
+                <button class="btn-classic" onclick="enviarRecurso('tabaco')">Enviar Tabaco</button>
+            </div>
+            <div id="recompensa-panel" class="hidden" style="background:#e7f3ff; padding:10px; margin-top:10px; border:1px solid var(--azul); border-radius:8px;">
+                <h4 style="margin:0 0 10px 0;">¡Suministros de la Corona!</h4>
+                <div class="grid-local" style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                    <button class="btn-classic" onclick="pedirRefuerzo('Infantería Pesada')">Inf. Pesada</button>
+                    <button class="btn-classic" onclick="pedirRefuerzo('Caballería')">Caballería</button>
+                    <button class="btn-classic" onclick="pedirRefuerzo('mosquetes')">Mosquetes (+30)</button>
+                    <button class="btn-classic" onclick="pedirRefuerzo('oro')">Oro (+100)</button>
                 </div>
             </div>
         </section>
 
-        <button class="btn-turno-fijo" onclick="siguienteTurno()">FINALIZAR TURNO</button>
+        <button class="btn-turno-fijo" onclick="siguienteTurno()">PASAR TURNO</button>
     </main>
+
+    <div id="modal-ciudad" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="ciudad-nombre"></h2>
+            <p id="ciudad-stats"></p>
+            <hr>
+            <h4>Reclutamiento Local</h4>
+            <div id="reclutamiento-zona" class="grid-local" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
+            <hr>
+            <h4>Infraestructura</h4>
+            <button id="btn-subir-nivel" class="btn-atacar" style="width:100%; margin-bottom:10px;"></button>
+            <div id="lista-edificios" class="grid-local" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
+            <button onclick="cerrarModalCiudad()" class="btn-close" style="width:100%; padding:10px; margin-top:15px;">Cerrar Gestión</button>
+        </div>
+    </div>
 
     <div id="modal-resultado" class="modal-overlay hidden">
         <div class="modal-content">
             <h2 id="res-titulo"></h2>
-            <img id="res-img" src="" alt="Resultado">
+            <img id="res-img" src="" style="width:100%; height:150px; object-fit:cover; border-radius:8px; margin:10px 0;">
             <p id="res-detalle"></p>
-            <button onclick="cerrarModal()" class="btn-classic-lg">Continuar</button>
+            <button onclick="cerrarModal()" class="btn-close" style="width:100%; padding:10px;">Continuar</button>
         </div>
     </div>
 
